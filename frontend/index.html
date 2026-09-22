@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1220" />
+    <title>JEVLite — Document Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/frontend/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="JEVLite home">
+          <span class="brand-mark"><i></i><i></i><i></i></span>
+          <span>JEV<span>Lite</span></span>
+        </a>
+        <div class="topbar-actions">
+          <div class="connection-status" title="Il modello è disponibile sul tuo dispositivo"><span></span> Modello locale attivo</div>
+          <button class="icon-button" aria-label="Impostazioni" title="Impostazioni">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.4a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Zm8.2-3.4a6.8 6.8 0 0 0-.1-1.1l2-1.5-2-3.4-2.4 1a8.2 8.2 0 0 0-1.9-1.1L15.5 3h-4l-.3 3a8.2 8.2 0 0 0-1.9 1.1l-2.4-1-2 3.4 2 1.5a6.8 6.8 0 0 0 0 2.2l-2 1.5 2 3.4 2.4-1a8.2 8.2 0 0 0 1.9 1.1l.3 3h4l.3-3a8.2 8.2 0 0 0 1.9-1.1l2.4 1 2-3.4-2-1.5c.1-.4.1-.7.1-1.1Z"/></svg>
+          </button>
+          <div class="avatar">JD</div>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <p class="eyebrow"><span class="pulse-dot"></span> Document intelligence, on-device</p>
+            <h1>Classifica. Comprendi.<br /><em>Resta privato.</em></h1>
+            <p class="hero-copy">Analisi affidabile dei documenti aziendali, eseguita interamente nel tuo ambiente locale.</p>
+          </div>
+          <div class="privacy-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.8 7 10 4.1-1.2 7-5.4 7-10V6l-7-3Zm-3 9 2 2 4-4"/></svg><span><b>100% privato</b><br />I dati non lasciano il tuo dispositivo</span></div>
+        </section>
+
+        <section class="workspace" aria-label="Classificatore documenti">
+          <section class="input-panel panel">
+            <div class="panel-heading">
+              <div><p class="step">01 / DOCUMENTO</p><h2>Cosa vuoi classificare?</h2></div>
+              <span class="word-count" id="wordCount">0 parole</span>
+            </div>
+            <div class="source-tabs" role="tablist">
+              <button class="source-tab active" data-source="text" role="tab" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg> Incolla testo</button>
+              <button class="source-tab" data-source="upload" role="tab" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5"/></svg> Carica file</button>
+            </div>
+            <div id="textSource" class="source-content">
+              <label class="sr-only" for="documentText">Testo del documento</label>
+              <textarea id="documentText" maxlength="20000" placeholder="Incolla qui il contenuto del documento…"></textarea>
+              <div class="textarea-footer"><span>Supporta documenti in italiano e inglese</span><span id="characterCount">0 / 20.000</span></div>
+            </div>
+            <div id="uploadSource" class="source-content hidden">
+              <label class="upload-zone" id="uploadZone" for="fileInput">
+                <input id="fileInput" type="file" accept=".pdf,.docx,.txt,.md" hidden />
+                <span class="upload-icon"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 14v5h14v-5"/></svg></span>
+                <strong>Trascina qui il documento</strong><span>oppure <u>sfoglia dal dispositivo</u></span><small>PDF, DOCX, TXT · max 10 MB</small>
+              </label>
+              <div class="file-card hidden" id="fileCard"><span class="file-type" id="fileType">PDF</span><span class="file-name" id="fileName"></span><button id="removeFile" aria-label="Rimuovi file">×</button></div>
+            </div>
+
+            <div class="category-heading"><div><p class="step">02 / CATEGORIE</p><h2>Come lo vuoi organizzare?</h2></div><button class="text-button" id="addCategory">+ Aggiungi categoria</button></div>
+            <div class="category-list" id="categoryList"></div>
+            <button class="classify-button" id="classifyButton"><span>Classifica documento</span><svg viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button>
+            <p class="local-hint"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.9 8.8 7 10 4.1-1.2 7-5.4 7-10V6l-7-3Z"/></svg> L'inferenza viene eseguita localmente</p>
+          </section>
+
+          <aside class="result-panel panel" id="resultPanel" aria-live="polite">
+            <div class="result-top"><div><p class="step">03 / RISULTATO</p><h2>Classificazione</h2></div><span class="demo-badge" id="resultMode">DEMO</span></div>
+            <div id="emptyState" class="empty-state"><div class="empty-orbit"><svg viewBox="0 0 24 24"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.5 8.5 2.1 2.1m0-12.7-2.1 2.1m-8.5 8.5-2.1 2.1"/><circle cx="12" cy="12" r="3.5"/></svg></div><h3>In attesa del documento</h3><p>Inserisci del testo o carica un file per vedere la classificazione.</p></div>
+            <div id="loadingState" class="loading-state hidden"><div class="scanner"><i></i></div><h3>Il modello sta analizzando</h3><p>Estrazione del contesto e confronto con le categorie…</p></div>
+            <div id="resultContent" class="result-content hidden">
+              <div class="primary-result">
+                <div class="ring" id="confidenceRing"><div class="ring-inner"><strong id="mainConfidence">—</strong><span>confidence</span></div></div>
+                <div class="result-label"><span class="result-label-caption">CATEGORIA RILEVATA</span><h3 id="mainCategory">—</h3><p id="confidenceCopy">—</p></div>
+              </div>
+              <div class="separator"></div>
+              <div class="distribution-heading"><span>Distribuzione confidence</span><span>Probabilità</span></div>
+              <div id="confidenceList" class="confidence-list"></div>
+              <div class="result-footer"><span><i></i> Analisi completata</span><span id="inferenceTime">— ms</span></div>
+            </div>
+          </aside>
+        </section>
+        <section class="metrics" aria-label="Stato del sistema"><div><span>MODELLO</span><b>JEVLite · v0.1.0</b></div><div><span>MODALITÀ</span><b><i></i> Local inference</b></div><div><span>DATI TRASMESSI</span><b>0 B <small>· Nessun cloud</small></b></div><div><span>LATENZA MEDIA</span><b>~ 248 ms</b></div></section>
+      </main>
+    </div>
+    <script src="/frontend/app.js"></script>
+  </body>
+</html>
