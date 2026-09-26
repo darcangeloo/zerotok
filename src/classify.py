@@ -1,30 +1,30 @@
-from src.logits import get_letter_probs
-from src.prompt import build_prompt
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+import requests
+from .logits import get_letter_probs
+from .prompt import build_prompt
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+SERVER_URL = "http://127.0.0.1:8080/v1/chat/completions"
+TOP_K = 20
 
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-1.5B-Instruct")
-model = AutoModelForCausalLM.from_pretrained(
-    "Qwen/Qwen2.5-1.5B-Instruct",
-    load_in_4bit=True,
-    device_map="auto"
-)
+# Una sola connessione riusata per tutte le richieste
+session = requests.Session()
 
-def classify_document(document, categories):
-    prompt_raw, used_letters = build_prompt(document, categories)
-    
-    messages = [
-        {"role": "user", "content": prompt_raw}
-    ]
-    
-    chat_template = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    inputs = tokenizer(chat_template, return_tensors="pt").to(model.device)
-    
-    with torch.no_grad():
-        outputs = model(**inputs)
-        
-    logits = outputs.logits[0, -1, :]
-    return get_letter_probs(logits, used_letters, tokenizer)
 
+def request_logprobs(messages):
+    payload = {
+        "messages": messages,
+        "max_tokens": 1,
+        "temperature": 0,
+        "logprobs": True,
+        "top_logprobs": TOP_K,
+        "cache_prompt": True,
+    }
+    response = session.post(SERVER_URL, json=payload, timeout=30)
+    response.raise_for_status()
+    return response.json()
+
+
+def classify_document(document, categories, descriptions=None):
+    messages, used_letters = build_prompt(document, categories, descriptions)
+    data = request_logprobs(messages)
+    top_logprobs = data["choices"][0]["logprobs"]["content"][0]["top_logprobs"]
+    return get_letter_probs(top_logprobs, used_letters)

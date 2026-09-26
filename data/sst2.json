@@ -1,0 +1,408 @@
+{
+  "categories": [
+    "Negative",
+    "Positive"
+  ],
+  "examples": [
+    {
+      "text": "holden caulfield did it better . ",
+      "label": "Negative"
+    },
+    {
+      "text": "this is a winning ensemble comedy that shows canadians can put gentle laughs and equally gentle sentiments on the button , just as easily as their counterparts anywhere else in the world . ",
+      "label": "Positive"
+    },
+    {
+      "text": "this riveting world war ii moral suspense story deals with the shadow side of american culture : racial prejudice in its ugly and diverse forms . ",
+      "label": "Negative"
+    },
+    {
+      "text": "this flick is about as cool and crowd-pleasing as a documentary can get . ",
+      "label": "Positive"
+    },
+    {
+      "text": "bleakly funny , its characters all the more touching for refusing to pity or memorialize themselves . ",
+      "label": "Positive"
+    },
+    {
+      "text": "but this films lacks the passion required to sell the material . ",
+      "label": "Negative"
+    },
+    {
+      "text": "nicks , seemingly uncertain what 's going to make people laugh , runs the gamut from stale parody to raunchy sex gags to formula romantic comedy . ",
+      "label": "Negative"
+    },
+    {
+      "text": "has a lot of the virtues of eastwood at his best . ",
+      "label": "Positive"
+    },
+    {
+      "text": "something akin to a japanese alice through the looking glass , except that it seems to take itself far more seriously . ",
+      "label": "Positive"
+    },
+    {
+      "text": "without non-stop techno or the existential overtones of a kieslowski morality tale , maelström is just another winter sleepers . ",
+      "label": "Negative"
+    },
+    {
+      "text": "comes ... uncomfortably close to coasting in the treads of the bicycle thief . ",
+      "label": "Negative"
+    },
+    {
+      "text": "i had to look away - this was god awful . ",
+      "label": "Negative"
+    },
+    {
+      "text": "the humor is forced and heavy-handed , and occasionally simply unpleasant . ",
+      "label": "Negative"
+    },
+    {
+      "text": "oscar wilde 's masterpiece , the importance of being earnest , may be the best play of the 19th century . ",
+      "label": "Positive"
+    },
+    {
+      "text": "you really have to wonder how on earth anyone , anywhere could have thought they 'd make audiences guffaw with a script as utterly diabolical as this . ",
+      "label": "Negative"
+    },
+    {
+      "text": "outer-space buffs might love this film , but others will find its pleasures intermittent . ",
+      "label": "Negative"
+    },
+    {
+      "text": "i got a headache watching this meaningless downer . ",
+      "label": "Negative"
+    },
+    {
+      "text": "the film contains no good jokes , no good scenes , barely a moment when carvey 's saturday night live-honed mimicry rises above the level of embarrassment . ",
+      "label": "Negative"
+    },
+    {
+      "text": "rarely has so much money delivered so little entertainment . ",
+      "label": "Negative"
+    },
+    {
+      "text": "looking aristocratic , luminous yet careworn in jane hamilton 's exemplary costumes , rampling gives a performance that could not be improved upon . ' ",
+      "label": "Positive"
+    },
+    {
+      "text": "old-form moviemaking at its best . ",
+      "label": "Positive"
+    },
+    {
+      "text": "a swashbuckling tale of love , betrayal , revenge and above all , faith . ",
+      "label": "Positive"
+    },
+    {
+      "text": "it all feels like a monty python sketch gone horribly wrong . ",
+      "label": "Negative"
+    },
+    {
+      "text": "it 's dumb , but more importantly , it 's just not scary . ",
+      "label": "Negative"
+    },
+    {
+      "text": "this is a shameless sham , calculated to cash in on the popularity of its stars . ",
+      "label": "Negative"
+    },
+    {
+      "text": "kinnear does n't aim for our sympathy , but rather delivers a performance of striking skill and depth . ",
+      "label": "Positive"
+    },
+    {
+      "text": "a coarse and stupid gross-out . ",
+      "label": "Negative"
+    },
+    {
+      "text": "there seems to be no clear path as to where the story 's going , or how long it 's going to take to get there . ",
+      "label": "Negative"
+    },
+    {
+      "text": "very special effects , brilliantly bold colors and heightened reality ca n't hide the giant achilles ' heel in `` stuart little 2 `` : there 's just no story , folks . ",
+      "label": "Negative"
+    },
+    {
+      "text": "or emptying rat traps . ",
+      "label": "Negative"
+    },
+    {
+      "text": "at a time when half the so-called real movies are little more than live-action cartoons , it 's refreshing to see a cartoon that knows what it is , and knows the form 's history . ",
+      "label": "Positive"
+    },
+    {
+      "text": "director of photography benoit delhomme shot the movie in delicious colors , and the costumes and sets are grand . ",
+      "label": "Positive"
+    },
+    {
+      "text": "the story and the friendship proceeds in such a way that you 're watching a soap opera rather than a chronicle of the ups and downs that accompany lifelong friendships . ",
+      "label": "Negative"
+    },
+    {
+      "text": "it 's like watching a nightmare made flesh . ",
+      "label": "Negative"
+    },
+    {
+      "text": "not since freddy got fingered has a major release been so painful to sit through . ",
+      "label": "Negative"
+    },
+    {
+      "text": "whether you like rap music or loathe it , you ca n't deny either the tragic loss of two young men in the prime of their talent or the power of this movie . ",
+      "label": "Positive"
+    },
+    {
+      "text": "collateral damage finally delivers the goods for schwarzenegger fans . ",
+      "label": "Positive"
+    },
+    {
+      "text": "the draw ( for `` big bad love '' ) is a solid performance by arliss howard . ",
+      "label": "Positive"
+    },
+    {
+      "text": "it 's so good that its relentless , polished wit can withstand not only inept school productions , but even oliver parker 's movie adaptation . ",
+      "label": "Positive"
+    },
+    {
+      "text": "combining quick-cut editing and a blaring heavy metal much of the time , beck seems to be under the illusion that he 's shooting the latest system of a down video . ",
+      "label": "Negative"
+    },
+    {
+      "text": "just embarrassment and a vague sense of shame . ",
+      "label": "Negative"
+    },
+    {
+      "text": "nine queens is not only than a frighteningly capable debut and genre piece , but also a snapshot of a dangerous political situation on the verge of coming to a head . ",
+      "label": "Positive"
+    },
+    {
+      "text": "add yet another hat to a talented head , clooney 's a good director . ",
+      "label": "Positive"
+    },
+    {
+      "text": "a moody , multi-dimensional love story and sci-fi mystery , solaris is a thought-provoking , haunting film that allows the seeds of the imagination to germinate . ",
+      "label": "Positive"
+    },
+    {
+      "text": "the film is beautifully mounted , but , more to the point , the issues are subtly presented , managing to walk a fine line with regard to the question of joan 's madness . ",
+      "label": "Positive"
+    },
+    {
+      "text": "one of creepiest , scariest movies to come along in a long , long time , easily rivaling blair witch or the others . ",
+      "label": "Positive"
+    },
+    {
+      "text": "good car chases , great fight scenes , and a distinctive blend of european , american and asian influences . ",
+      "label": "Positive"
+    },
+    {
+      "text": "verbinski implements every hack-artist trick to give us the ooky-spookies . ",
+      "label": "Negative"
+    },
+    {
+      "text": "that 's a cheat . ",
+      "label": "Negative"
+    },
+    {
+      "text": "it 's a cookie-cutter movie , a cut-and-paste job . ",
+      "label": "Negative"
+    },
+    {
+      "text": "cool ? ",
+      "label": "Positive"
+    },
+    {
+      "text": "while locals will get a kick out of spotting cleveland sites , the rest of the world will enjoy a fast-paced comedy with quirks that might make the award-winning coen brothers envious . ",
+      "label": "Positive"
+    },
+    {
+      "text": "there has always been something likable about the marquis de sade . ",
+      "label": "Positive"
+    },
+    {
+      "text": "displaying about equal amounts of naiveté , passion and talent , beneath clouds establishes sen as a filmmaker of considerable potential . ",
+      "label": "Positive"
+    },
+    {
+      "text": "there ought to be a directing license , so that ed burns can have his revoked . ",
+      "label": "Negative"
+    },
+    {
+      "text": "filmmakers who can deftly change moods are treasures and even marvels . ",
+      "label": "Positive"
+    },
+    {
+      "text": "it 's everything you do n't go to the movies for . ",
+      "label": "Negative"
+    },
+    {
+      "text": "for movie lovers as well as opera lovers , tosca is a real treat . ",
+      "label": "Positive"
+    },
+    {
+      "text": "instead of hiding pinocchio from critics , miramax should have hidden it from everyone . ",
+      "label": "Negative"
+    },
+    {
+      "text": "an entertaining , colorful , action-filled crime story with an intimate heart . ",
+      "label": "Positive"
+    },
+    {
+      "text": "how do you spell cliché ? ",
+      "label": "Negative"
+    },
+    {
+      "text": "leigh 's film is full of memorable performances from top to bottom . ",
+      "label": "Positive"
+    },
+    {
+      "text": "scores no points for originality , wit , or intelligence . ",
+      "label": "Negative"
+    },
+    {
+      "text": "sticky sweet sentimentality , clumsy plotting and a rosily myopic view of life in the wwii-era mississippi delta undermine this adaptation . ",
+      "label": "Negative"
+    },
+    {
+      "text": "it 's not that kung pow is n't funny some of the time -- it just is n't any funnier than bad martial arts movies are all by themselves , without all oedekerk 's impish augmentation . ",
+      "label": "Negative"
+    },
+    {
+      "text": "it can not be enjoyed , even on the level that one enjoys a bad slasher flick , primarily because it is dull . ",
+      "label": "Negative"
+    },
+    {
+      "text": "there 's a wickedly subversive bent to the best parts of birthday girl . ",
+      "label": "Positive"
+    },
+    {
+      "text": "with rabbit-proof fence , noyce has tailored an epic tale into a lean , economical movie . ",
+      "label": "Positive"
+    },
+    {
+      "text": "no sophomore slump for director sam mendes , who segues from oscar winner to oscar-winning potential with a smooth sleight of hand . ",
+      "label": "Positive"
+    },
+    {
+      "text": "lapaglia 's ability to convey grief and hope works with weaver 's sensitive reactions to make this a two-actor master class . ",
+      "label": "Positive"
+    },
+    {
+      "text": "a great ensemble cast ca n't lift this heartfelt enterprise out of the familiar . ",
+      "label": "Negative"
+    },
+    {
+      "text": "as unseemly as its title suggests . ",
+      "label": "Positive"
+    },
+    {
+      "text": "this is an egotistical endeavor from the daughter of horror director dario argento ( a producer here ) , but her raw performance and utter fearlessness make it strangely magnetic . ",
+      "label": "Positive"
+    },
+    {
+      "text": "without ever becoming didactic , director carlos carrera expertly weaves this novelistic story of entangled interrelationships and complex morality . ",
+      "label": "Positive"
+    },
+    {
+      "text": "uses high comedy to evoke surprising poignance . ",
+      "label": "Positive"
+    },
+    {
+      "text": "it 's a work by an artist so in control of both his medium and his message that he can improvise like a jazzman . ",
+      "label": "Positive"
+    },
+    {
+      "text": "the so-inept - it 's - surreal dubbing ( featuring the voices of glenn close , regis philbin and breckin meyer ) brings back memories of cheesy old godzilla flicks . ",
+      "label": "Negative"
+    },
+    {
+      "text": "why make a documentary about these marginal historical figures ? ",
+      "label": "Negative"
+    },
+    {
+      "text": "a better title , for all concerned , might be swept under the rug . ",
+      "label": "Negative"
+    },
+    {
+      "text": "my reaction in a word : disappointment . ",
+      "label": "Negative"
+    },
+    {
+      "text": "a superbly acted and funny/gritty fable of the humanizing of one woman at the hands of the unseen forces of fate . ",
+      "label": "Positive"
+    },
+    {
+      "text": "this surreal gilliam-esque film is also a troubling interpretation of ecclesiastes . ",
+      "label": "Positive"
+    },
+    {
+      "text": "the far future may be awesome to consider , but from period detail to matters of the heart , this film is most transporting when it stays put in the past . ",
+      "label": "Positive"
+    },
+    {
+      "text": "it deserves to be seen by anyone with even a passing interest in the events shaping the world beyond their own horizons . ",
+      "label": "Positive"
+    },
+    {
+      "text": "... routine , harmless diversion and little else . ",
+      "label": "Positive"
+    },
+    {
+      "text": "one of the most significant moviegoing pleasures of the year . ",
+      "label": "Positive"
+    },
+    {
+      "text": "suffocated by its fussy script and uptight characters , this musty adaptation is all the more annoying since it 's been packaged and sold back to us by hollywood . ",
+      "label": "Negative"
+    },
+    {
+      "text": "not an objectionable or dull film ; it merely lacks everything except good intentions . ",
+      "label": "Negative"
+    },
+    {
+      "text": "or doing last year 's taxes with your ex-wife . ",
+      "label": "Negative"
+    },
+    {
+      "text": "a subtle and well-crafted ( for the most part ) chiller . ",
+      "label": "Positive"
+    },
+    {
+      "text": "uncommonly stylish but equally silly ... the picture fails to generate much suspense , nor does it ask searching enough questions to justify its pretensions . ",
+      "label": "Negative"
+    },
+    {
+      "text": "k-19 exploits our substantial collective fear of nuclear holocaust to generate cheap hollywood tension . ",
+      "label": "Negative"
+    },
+    {
+      "text": "of course , by more objective measurements it 's still quite bad . ",
+      "label": "Negative"
+    },
+    {
+      "text": "while ( hill ) has learned new tricks , the tricks alone are not enough to salvage this lifeless boxing film . ",
+      "label": "Negative"
+    },
+    {
+      "text": "all that 's missing is the spontaneity , originality and delight . ",
+      "label": "Negative"
+    },
+    {
+      "text": "the movie understands like few others how the depth and breadth of emotional intimacy give the physical act all of its meaning and most of its pleasure . ",
+      "label": "Positive"
+    },
+    {
+      "text": "it 's clear the filmmakers were n't sure where they wanted their story to go , and even more clear that they lack the skills to get us to this undetermined destination . ",
+      "label": "Negative"
+    },
+    {
+      "text": "reign of fire looks as if it was made without much thought -- and is best watched that way . ",
+      "label": "Positive"
+    },
+    {
+      "text": "two hours fly by -- opera 's a pleasure when you do n't have to endure intermissions -- and even a novice to the form comes away exhilarated . ",
+      "label": "Positive"
+    },
+    {
+      "text": "harris commands the screen , using his frailty to suggest the ravages of a life of corruption and ruthlessness . ",
+      "label": "Positive"
+    }
+  ]
+}

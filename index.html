@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7f8">
+<title>zerotok — Decisioni locali</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f4f6f3;
+  --surface: #fff;
+  --ink: #1b2928;
+  --muted: #647472;
+  --line: #e2e9e5;
+  --accent: #287866;
+  --accent-dark: #1c6253;
+  --accent-soft: #e8f3ef;
+  --amber: #c38b30;
+  --track: #edf1ef;
+  --danger: #ad4942;
+  --shadow: 0 12px 36px rgba(27, 47, 42, .055), 0 2px 7px rgba(27, 47, 42, .035);
+  --radius: 18px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 50% -22%, #e6f0e9 0, transparent 43%), var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 "Aptos", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #91cbbb; outline-offset: 2px; }
+.shell { max-width: 1210px; margin: auto; padding: 28px 28px 62px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 48px; }
+.brand { display: flex; flex-direction: column; gap: 1px; }
+.brand-name { font-size: 20px; font-weight: 750; letter-spacing: -.045em; }
+.brand-sub { font-size: 12px; color: var(--muted); letter-spacing: .015em; }
+.local-pill { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.82); padding: 8px 12px; border-radius: 99px; color: var(--muted); font-size: 12px; box-shadow: 0 2px 8px rgba(27,47,42,.035); }
+.dot { height: 8px; width: 8px; border-radius: 50%; background: #9aa7af; }
+.dot.ok { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.dot.busy { background: var(--amber); animation: pulse 1s infinite alternate; }
+.dot.error { background: var(--danger); }
+@keyframes pulse { to { opacity: .4; } }
+.hero { margin: 0 0 30px; }
+h1 { max-width: 780px; font: 500 clamp(35px, 5.2vw, 57px)/1.05 Georgia, "Times New Roman", serif; letter-spacing: -.047em; margin: 0 0 14px; }
+.intro { color: var(--muted); max-width: 68ch; margin: 0; font-size: 15px; }
+.model-strip { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 19px; }
+.tag { font-size: 11px; font-weight: 580; letter-spacing: .015em; padding: 6px 10px; background: rgba(255,255,255,.72); border: 1px solid var(--line); border-radius: 99px; color: #52635f; }
+.layout { display: grid; grid-template-columns: minmax(310px, .88fr) minmax(0, 1.4fr); gap: 18px; align-items: start; }
+.card { background: var(--surface); border: 1px solid rgba(220,230,224,.9); border-radius: var(--radius); box-shadow: var(--shadow); padding: 23px; transition: box-shadow .2s ease, transform .2s ease; }
+.card:hover { box-shadow: 0 16px 42px rgba(27,47,42,.075), 0 3px 9px rgba(27,47,42,.04); }
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 17px; }
+.card h2 { font-size: 16px; font-weight: 680; letter-spacing: -.025em; margin: 0; }
+.eyebrow { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 5px; }
+.field-label { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; font-weight: 620; color: #53635f; margin-bottom: 7px; }
+.hint { font-size: 11px; font-weight: 450; color: #899692; }
+textarea, .text-input { width: 100%; background: #fbfcfb; border: 1px solid #dfe7e2; border-radius: 11px; padding: 11px 13px; color: var(--ink); transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+textarea:hover, .text-input:hover { border-color: #c7d7cf; }
+textarea:focus, .text-input:focus { border-color: #76aa9a; background: #fff; box-shadow: 0 0 0 3px rgba(40,120,102,.09); outline: 0; }
+textarea { min-height: 122px; resize: vertical; }
+textarea::placeholder, input::placeholder { color: #9aa6a1; }
+.decision-list { display: grid; gap: 10px; margin: 14px 0; }
+.decision { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: linear-gradient(145deg, #fff, #fcfdfc); }
+.decision-top { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 8px; }
+.decision-options { margin-bottom: 8px; }
+.decision-desc { min-height: 57px; font-size: 12px; }
+.text-input { height: 41px; }
+.remove { border: 1px solid var(--line); background: #fff; color: var(--muted); border-radius: 10px; width: 41px; font-size: 19px; transition: color .15s, border-color .15s, background .15s; }
+.remove:hover:not(:disabled) { color: var(--danger); border-color: #e4b9b5; background: #fff8f7; }
+.remove:disabled { opacity: .42; cursor: not-allowed; }
+.button-row { display: flex; gap: 10px; align-items: center; }
+.btn { border-radius: 11px; padding: 10px 14px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-size: 13px; font-weight: 650; transition: transform .16s ease, box-shadow .16s ease, background .16s ease; }
+.btn:hover:not(:disabled) { background: #f8faf8; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(27,47,42,.06); }
+.btn:active:not(:disabled) { transform: translateY(0); }
+.btn-primary { background: linear-gradient(135deg, #318774, #246f5e); border-color: var(--accent); color: white; padding: 11px 17px; box-shadow: 0 5px 12px rgba(40,120,102,.16); }
+.btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, #2d7e6d, #1c6253); box-shadow: 0 7px 16px rgba(40,120,102,.23); }
+.btn:disabled { opacity: .56; cursor: wait; }
+.add-btn { width: 100%; border-style: dashed; color: var(--accent); }
+.run-row { margin-top: 14px; }
+.error { display: none; margin-top: 12px; color: var(--danger); background: #fff3f1; border: 1px solid #f1d9d5; border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.error.show { display: block; }
+.helper { font-size: 11px; color: var(--muted); margin: 12px 0 0; }
+.summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin-bottom: 15px; }
+.metric { padding: 13px; background: linear-gradient(150deg, #f8faf8, #f5f8f6); border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+.metric-label { font-size: 10px; font-weight: 620; color: var(--muted); letter-spacing: .035em; }
+.metric-value { font-size: 21px; font-weight: 740; letter-spacing: -.045em; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.metric-unit { font-size: 11px; color: var(--muted); font-weight: 550; letter-spacing: 0; }
+.results-empty { min-height: 224px; display: grid; place-content: center; text-align: center; color: var(--muted); padding: 25px; }
+.empty-icon { width: 46px; height: 46px; border-radius: 15px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin: 0 auto 13px; font-size: 21px; }
+.empty-title { font-weight: 660; color: var(--ink); margin-bottom: 3px; }
+.result-card { border: 1px solid var(--line); border-radius: 13px; padding: 15px; margin-top: 10px; animation: enter .32s ease both; }
+@keyframes enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.result-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+.result-title { font-weight: 690; letter-spacing: -.015em; }
+.result-choice { font-size: 11px; font-weight: 650; color: var(--accent-dark); background: var(--accent-soft); border-radius: 99px; padding: 5px 9px; margin-left: 8px; white-space: nowrap; }
+.latency { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.prob-row { display: grid; grid-template-columns: minmax(75px, 130px) 1fr 52px; gap: 10px; align-items: center; margin: 9px 0; font-size: 12px; }
+.prob-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.prob-row.winner .prob-label { color: var(--ink); font-weight: 660; }
+.track { height: 9px; background: var(--track); border-radius: 99px; overflow: hidden; }
+.fill { height: 100%; width: 0; background: #aebbb6; border-radius: 99px; transition: width .55s cubic-bezier(.2,.8,.2,1); }
+.winner .fill { background: linear-gradient(90deg, #55a18d, var(--accent)); box-shadow: 0 0 8px rgba(40,120,102,.2); }
+.pct { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.winner .pct { color: var(--ink); font-weight: 660; }
+.chart-card { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 16px; }
+.chart-title { font-size: 12px; font-weight: 680; margin: 0 0 12px; }
+.latency-chart { display: flex; align-items: end; gap: 10px; height: 108px; padding: 0 2px; }
+.latency-col { display: flex; flex: 1; min-width: 0; height: 100%; flex-direction: column; justify-content: end; align-items: center; gap: 5px; }
+.latency-bar-wrap { height: 73px; width: min(38px, 75%); display: flex; align-items: end; background: linear-gradient(to top, transparent 32%, #edf1ef 32%, #edf1ef 33%, transparent 33%, transparent 66%, #edf1ef 66%, #edf1ef 67%, transparent 67%); border-radius: 5px 5px 0 0; }
+.latency-bar { width: 100%; min-height: 3px; background: #9cc5b8; border-radius: 5px 5px 2px 2px; transition: height .5s ease; }
+.latency-bar.first { background: var(--accent); }
+.latency-val { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.latency-name { font-size: 10px; color: var(--muted); max-width: 75px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+.chart-note { font-size: 11px; color: var(--muted); margin: 9px 0 0; }
+.explain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 24px; }
+.step { position: relative; padding: 14px 14px 0 0; }
+.step:not(:last-child):after { content: ""; height: 1px; background: var(--line); position: absolute; left: 31px; right: 12px; top: 24px; }
+.step .step-num { position: relative; z-index: 1; background: var(--accent-soft); color: var(--accent); height: 23px; width: 23px; border-radius: 8px; display: grid; place-items: center; text-align: center; line-height: 1; font-size: 11px; font-weight: 720; margin-bottom: 10px; }
+.step strong { display: block; font-size: 12px; margin-bottom: 3px; }
+.step span { font-size: 11px; color: var(--muted); display: block; max-width: 24ch; }
+.note { font-size: 12px; color: var(--muted); margin: 15px 0 0; padding-top: 13px; border-top: 1px solid var(--line); }
+.foot { display: flex; justify-content: space-between; gap: 12px; margin-top: 17px; color: #899692; font-size: 11px; }
+@media (max-width: 850px) { .layout { grid-template-columns: 1fr; } .explain { grid-template-columns: repeat(2, 1fr); row-gap: 12px; } .step:nth-child(2):after { display: none; } }
+@media (max-width: 520px) { .shell { padding: 20px 14px 40px; } .topbar { margin-bottom: 36px; } .brand-sub { display: none; } .card { padding: 17px; } .summary { gap: 7px; } .metric { padding: 10px; } .metric-value { font-size: 17px; } .prob-row { grid-template-columns: minmax(60px, 95px) 1fr 45px; gap: 7px; } .local-pill { font-size: 11px; } .foot { flex-direction: column; } h1 { font-size: clamp(34px, 10vw, 46px); } }
+@media (prefers-reduced-motion: reduce) { *, *:before, *:after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="topbar" aria-label="Intestazione">
+    <div class="brand"><div class="brand-name">zerotok</div><div class="brand-sub">Decisioni strutturate, in locale</div></div>
+    <div class="local-pill"><span class="dot" id="statusDot"></span><span id="statusText">Pronto per una decisione</span></div>
+  </nav>
+  <header class="hero">
+    <h1>Dal testo a una decisione, senza generare testo.</h1>
+    <p class="intro">Definisci le opzioni e lascia che il modello assegni uno score a ciascuna. Le decisioni vengono eseguite in sequenza sullo stesso stato, così llama.cpp può riusare il prefisso già elaborato.</p>
+    <div class="model-strip"><span class="tag">Qwen3-4B-Instruct-2507 · Q8_0</span><span class="tag">llama.cpp · slot singolo</span><span class="tag">Logit delle opzioni · softmax</span></div>
+  </header>
+  <main class="layout">
+    <section class="card" aria-labelledby="inputTitle">
+      <div class="card-head"><div><div class="eyebrow">Input</div><h2 id="inputTitle">Stato e decisioni</h2></div></div>
+      <label class="field-label" for="state"><span>Testo di partenza</span><span class="hint" id="charCount">0 caratteri</span></label>
+      <textarea id="state" placeholder="Incolla il testo, il ticket o il contesto da valutare…"></textarea>
+      <div class="field-label" style="margin-top:17px"><span>Decisioni richieste</span><span class="hint">da 2 a 26 opzioni</span></div>
+      <div class="decision-list" id="decisions"></div>
+      <button class="btn add-btn" id="addDecision" type="button">+ Aggiungi una decisione</button>
+      <div class="button-row run-row"><button class="btn btn-primary" id="decideBtn" type="button">Valuta le decisioni</button><span class="hint">Richieste in sequenza</span></div>
+      <div class="error" id="error" role="alert"></div>
+      <p class="helper">Facoltativo: aggiungi una descrizione per ogni opzione, una per riga e nello stesso ordine.</p>
+    </section>
+    <section class="card" aria-labelledby="resultsTitle" aria-live="polite">
+      <div class="card-head"><div><div class="eyebrow">Output del modello</div><h2 id="resultsTitle">Risultati</h2></div><span class="hint" id="runStamp"></span></div>
+      <div id="results"><div class="results-empty"><div><div class="empty-icon" aria-hidden="true">↗</div><div class="empty-title">I risultati appariranno qui</div><div>Inserisci uno stato e almeno una decisione.</div></div></div></div>
+    </section>
+  </main>
+  <section class="card" style="margin-top:18px" aria-labelledby="flowTitle">
+    <div class="eyebrow">Come funziona</div><h2 id="flowTitle">Una scelta basata sui punteggi del modello</h2>
+    <div class="explain">
+      <div class="step"><span class="step-num">1</span><strong>Stato</strong><span>Il testo viene messo all’inizio del prompt.</span></div>
+      <div class="step"><span class="step-num">2</span><strong>Opzioni</strong><span>Ogni opzione è associata a una lettera: A, B, C…</span></div>
+      <div class="step"><span class="step-num">3</span><strong>Logit</strong><span>Il server restituisce i punteggi delle lettere, senza comporre una risposta.</span></div>
+      <div class="step"><span class="step-num">4</span><strong>Probabilità</strong><span>Softmax normalizza i punteggi fra le sole opzioni ammesse.</span></div>
+    </div>
+    <p class="note">Le probabilità descrivono la preferenza relativa del modello tra le opzioni fornite; possono essere troppo sicure anche quando la scelta è sbagliata. Non usarle come confidenza calibrata. Le decisioni successive riutilizzano il prefisso tramite la cache di llama.cpp.</p>
+  </section>
+  <footer class="foot"><span>Elaborazione locale tramite server llama.cpp.</span><span id="lastRun"></span></footer>
+</div>
+<script>
+const stateEl=document.getElementById('state'), decisionsEl=document.getElementById('decisions'), resultsEl=document.getElementById('results'), errorEl=document.getElementById('error'), decideBtn=document.getElementById('decideBtn');
+stateEl.addEventListener('input',()=>document.getElementById('charCount').textContent=`${stateEl.value.length.toLocaleString('it-IT')} caratteri`);
+function addDecision(name='', options='', descriptions=''){
+  const box=document.createElement('div');box.className='decision';
+  const top=document.createElement('div');top.className='decision-top';
+  const title=document.createElement('input');title.className='text-input decision-name';title.placeholder='Nome, per esempio urgenza';title.value=name;title.setAttribute('aria-label','Nome della decisione');
+  const remove=document.createElement('button');remove.className='remove';remove.type='button';remove.textContent='×';remove.setAttribute('aria-label','Rimuovi decisione');remove.addEventListener('click',()=>{box.remove();updateRemoveButtons()});top.append(title,remove);
+  const opts=document.createElement('input');opts.className='text-input decision-options';opts.placeholder='Opzioni separate da virgola: Alta, Media, Bassa';opts.value=options;opts.setAttribute('aria-label','Opzioni separate da virgola');
+  const desc=document.createElement('textarea');desc.className='decision-desc';desc.placeholder='Descrizioni facoltative: una per riga, nello stesso ordine delle opzioni';desc.value=descriptions;desc.setAttribute('aria-label','Descrizioni facoltative, una per riga');
+  box.append(top,opts,desc);decisionsEl.append(box);updateRemoveButtons();
+}
+function updateRemoveButtons(){const buttons=decisionsEl.querySelectorAll('.remove');buttons.forEach(b=>b.disabled=buttons.length===1)}
+document.getElementById('addDecision').addEventListener('click',()=>addDecision());
+function readDecisions(){
+  const out=[];
+  for(const row of decisionsEl.querySelectorAll('.decision')){
+    const name=row.querySelector('.decision-name').value.trim(),options=row.querySelector('.decision-options').value.split(',').map(x=>x.trim()).filter(Boolean),raw=row.querySelector('.decision-desc').value.trim();
+    if(!name&&!options.length&&!raw)continue;
+    if(!name)throw Error('Inserisci un nome per ogni decisione.');
+    if(options.length<2||options.length>26)throw Error(`“${name}”: servono da 2 a 26 opzioni separate da virgola.`);
+    const descriptions=raw?raw.split('\n').map(x=>x.trim()):[];
+    if(raw&&descriptions.length!==options.length)throw Error(`“${name}”: inserisci una descrizione per ciascuna opzione, nello stesso ordine.`);
+    out.push({name,options,...(raw?{descriptions}:{})});
+  }
+  if(!out.length)throw Error('Aggiungi almeno una decisione con nome e opzioni.');return out;
+}
+function make(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el}
+function renderResults(data){
+  resultsEl.replaceChildren();
+  const summary=make('div','summary');
+  const values=[['Decisioni',data.decisions.length],['Durata totale',data.total_ms],['Media per scelta',data.total_ms/data.decisions.length]];
+  values.forEach(([label,value],i)=>{const m=make('div','metric');m.append(make('div','metric-label',label));const v=make('div','metric-value');if(i===0)v.textContent=value;else{v.append(document.createTextNode(value.toFixed(0)+' '),make('span','metric-unit','ms'))}m.append(v);summary.append(m)});resultsEl.append(summary);
+  data.decisions.forEach((d,index)=>{
+    const box=make('article','result-card');const head=make('div','result-head'),title=make('div','result-title',d.name),choice=make('span','result-choice',`Scelta · ${d.choice}`);title.append(choice);head.append(title,make('span','latency',`${d.latency_ms.toFixed(1)} ms`));box.append(head);
+    Object.entries(d.probs).sort((a,b)=>b[1]-a[1]).forEach(([label,p])=>{const row=make('div','prob-row'+(label===d.choice?' winner':''));row.append(make('span','prob-label',label));const track=make('div','track'),fill=make('div','fill');fill.style.width=`${Math.max(0,Math.min(1,p))*100}%`;track.append(fill);row.append(track,make('span','pct',`${(p*100).toFixed(1)}%`));box.append(row)});resultsEl.append(box);
+  });
+  const chart=make('div','chart-card');chart.append(make('h3','chart-title','Latenza per decisione'));
+  const bars=make('div','latency-chart'),max=Math.max(...data.decisions.map(d=>d.latency_ms),1);
+  data.decisions.forEach((d,i)=>{const col=make('div','latency-col');col.title=`${d.name}: ${d.latency_ms.toFixed(1)} ms`;const wrap=make('div','latency-bar-wrap'),bar=make('div','latency-bar'+(i===0?' first':''));bar.style.height=`${Math.max(4,d.latency_ms/max*100)}%`;wrap.append(bar);col.append(make('span','latency-val',`${d.latency_ms.toFixed(0)} ms`),wrap,make('span','latency-name',d.name));bars.append(col)});
+  chart.append(bars,make('p','chart-note','La prima decisione elabora il prompt completo; quelle successive possono riusare il prefisso in cache. I tempi variano in base al testo e al server.'));resultsEl.append(chart);
+  const now=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});document.getElementById('runStamp').textContent=`Completato alle ${now}`;document.getElementById('lastRun').textContent=`Ultima esecuzione: ${now}`;
+}
+function setStatus(mode,text){document.getElementById('statusDot').className=`dot ${mode}`;document.getElementById('statusText').textContent=text}
+decideBtn.addEventListener('click',async()=>{
+  errorEl.classList.remove('show');errorEl.textContent='';let decisions;
+  try{if(!stateEl.value.trim())throw Error('Inserisci il testo di partenza.');decisions=readDecisions()}catch(e){errorEl.textContent=e.message;errorEl.classList.add('show');return}
+  decideBtn.disabled=true;decideBtn.textContent='Valutazione in corso…';setStatus('busy','Modello al lavoro');
+  try{const res=await fetch('/v1/decisions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({state:stateEl.value.trim(),decisions})});const data=await res.json();if(!res.ok)throw Error(data.detail||'La richiesta non è riuscita.');renderResults(data);setStatus('ok','Ultima richiesta completata')}
+  catch(e){errorEl.textContent=e.message||'Impossibile contattare il server.';errorEl.classList.add('show');setStatus('error','Richiesta non riuscita')}
+  finally{decideBtn.disabled=false;decideBtn.textContent='Valuta le decisioni'}
+});
+addDecision('urgenza','Alta, Media, Bassa');
+</script>
+</body>
+</html>

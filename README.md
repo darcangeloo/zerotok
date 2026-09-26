@@ -1,101 +1,115 @@
-# RobSort
+# zerotok
 
-**Local-first classification for business documents.**
+Formerly RobSort.
 
-RobSort classifies a document against categories supplied at runtime—such as `Fattura`, `Contratto`, and `Altro`—using next-token probabilities from the local **Qwen2.5-1.5B-Instruct** model. Documents do not need to be sent to an external API.
+Typed decisions from a local LLM by reading logits, without generating text.
 
-> Your documents stay on your machine.
-
-## Features
-
-- Local inference, with CUDA used when it is available.
-- Configurable categories for every request.
-- FastAPI endpoint returning category, confidence, and probabilities.
-- Browser dashboard written in vanilla HTML, CSS, and JavaScript.
-- A small built-in evaluation set with accuracy, recall, F1, timing, and a confusion matrix.
-
-## Architecture
-
-```text
-Document → prompt with category labels → local Qwen model → logits → softmax → predicted category
-```
-
-## Project structure
-
-```text
-RobSort/
-├── app.py                 # FastAPI application and dashboard route
-├── evaluation.py          # Evaluation data and metrics
-├── frontend/
-│   ├── index.html
-│   ├── styles.css
-│   └── app.js
-└── src/
-    ├── classify.py        # Model loading and inference
-    ├── logits.py          # Logits → probabilities
-    └── prompt.py          # Classification prompt
-```
-
-## Installation
-
-Use Python 3.10+. Create a virtual environment and install the required packages.
+## Quickstart (Windows, PowerShell)
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install fastapi "uvicorn[standard]" transformers accelerate bitsandbytes torch
+winget install ggml.llamacpp
+.\start_server.ps1
 ```
 
-On its first run, RobSort downloads `Qwen/Qwen2.5-1.5B-Instruct`. The current model configuration uses four-bit loading and is intended for a compatible CUDA environment. For CPU-only use, update the model-loading options in `src/classify.py`.
-
-## Run locally
+In another terminal:
 
 ```powershell
-uvicorn app:app --reload
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app:app
 ```
 
-Then open [http://127.0.0.1:8000](http://127.0.0.1:8000). The frontend and API are served from the same local application, so CORS configuration is not required.
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
-## API
-
-`POST /classify`
-
-```json
-{
-  "document": "Fattura n. 482/2026. Imponibile €1.250, IVA 22%, totale €1.525.",
-  "categories": ["Fattura", "Contratto", "Altro"]
-}
+```powershell
+curl -X POST http://127.0.0.1:8000/v1/decisions `
+  -H "Content-Type: application/json" `
+  -d '{"state":"Il cliente scrive: il pacco e arrivato danneggiato e vuole un rimborso urgente entro oggi.","decisions":[{"name":"urgenza","options":["Alta","Media","Bassa"]},{"name":"sentiment","options":["Negativo","Neutro","Positivo"]}]}'
 ```
 
 ```json
 {
-  "category": "A",
-  "confidence": 0.8818,
-  "probabilities": {
-    "A": 0.8818,
-    "B": 0.1175,
-    "C": 0.0008
-  }
+  "decisions": [
+    {
+      "name": "urgenza",
+      "choice": "Alta",
+      "probs": {"Alta": 0.9999999998, "Media": 0.0000000001, "Bassa": 0.0000000000},
+      "latency_ms": 156.3
+    },
+    {
+      "name": "sentiment",
+      "choice": "Negativo",
+      "probs": {"Negativo": 0.9999999999, "Positivo": 0.0000000000, "Neutro": 0.0000000000},
+      "latency_ms": 45.4
+    }
+  ],
+  "total_ms": 201.7
 }
 ```
-
-The letter labels correspond to the supplied category order: `A → Fattura`, `B → Contratto`, `C → Altro`. `evaluation.py` maps those letters to readable names before computing its metrics.
 
 ## How it works
 
-1. `src/prompt.py` labels the supplied categories as `A`, `B`, `C`, and creates a constrained prompt.
-2. `src/classify.py` sends the prompt to the local Qwen model.
-3. `src/logits.py` selects the logits for permitted output letters and applies softmax.
-4. The highest probability becomes the predicted class.
+Each decision costs a single forward pass instead of generating one token at a time: the model runs with `max_tokens: 1`, so no text is produced. The prompt is processed in parallel by llama.cpp, and only the logits of the letters allowed as options (A, B, C...) are read and turned into probabilities with softmax. The document is placed before the instructions in the prompt so that repeated decisions on the same document share an identical prefix. Prefix caching itself is a llama.cpp feature; this project's contribution is designing the prompt to exploit it and measuring the effect.
 
-The confidence is normalized across the supplied category options; it should not be interpreted as a calibrated probability without further calibration work.
+## Results
 
-## Next steps
+### Latency (Qwen2.5-1.5B-Instruct)
 
-- Expand the evaluation set with anonymized, held-out real documents.
-- Map probability keys to category names in the API response.
-- Add PDF/DOCX text extraction before classification.
-- Add automated tests and confidence calibration.
+Same 110-token prompt, median of 20 requests after warm-up:
+
+| Setup | Median latency |
+|---|---|
+| transformers bf16, in-process, GPU | 45.3 ms |
+| llama.cpp, server-side compute | 20.5 ms |
+| llama.cpp, end-to-end over HTTP | 36.2 ms |
+
+The 20.5 ms and 36.2 ms figures were measured with Qwen2.5-1.5B-Instruct and an earlier version of `bench_latency.py`; running it again reproduces the same method and gives numbers of the same order, not identical ones. The 45.3 ms transformers figure was measured with a separate script that is not included in this repo. The previous version of this project ran on CPU by mistake (torch without CUDA), so most of the jump from that old version comes from fixing that, not from the runtime change. At equal GPU, the runtime gain is about 2x on compute and about 20% end-to-end.
+
+### Accuracy, zero-shot (Qwen3-4B-Instruct-2507 Q8_0)
+
+- SST-2: 88.0% (100 balanced examples from the validation split)
+- AG News: 88.5%, macro F1 0.885 (200 balanced examples from the test split)
+
+AG News errors concentrate on Business vs Sci/Tech.
+
+### Prefix caching (Qwen3-4B), 20 documents x 4 decisions
+
+| Document | First decision | Later decisions |
+|---|---|---|
+| Long (~500 tokens) | 188.8 ms end-to-end (130.3 ms server) | 44.4 ms end-to-end (23.5 ms server) |
+| Short (~80 tokens) | 50.4 ms | 42.3 ms |
+
+The cost of later decisions does not depend on document length: 10 decisions on a 500-token document take about 590 ms instead of about 1.9 s.
+
+### Hardware
+
+Laptop RTX 5060 8GB, i7-14650HX, 16GB RAM.
+
+## Limitations
+
+- Probabilities are overconfident, close to 0 or 1 even on wrong answers; do not use them as calibrated confidence.
+- Accuracy drops with overlapping or ambiguous labels: on an internal set of 45 support tickets, accuracy was 51-60% depending on class names and order, with a systematic bias toward high severity.
+- The 1.5B model showed a position bias toward option A.
+- Single slot (`-np 1`): concurrent clients on different documents invalidate each other's cache.
+- About 23 ms server-side is the floor per decision with this model and GPU; about 20 ms is HTTP/Python overhead.
+- Contextual calibration was tested and had no effect.
+
+## Reproduce
+
+```powershell
+python -m src.prepare_data
+python -m src.evaluation data/sst2.json
+python -m src.evaluation data/agnews.json
+python bench_cache.py
+python bench_latency.py
+```
+
+`bench_latency.py` compares against the 20.5 ms / 36.2 ms figures above only if the server is started with Qwen2.5-1.5B-Instruct Q8_0 instead of the 4B model.
+
+## Credits
+
+Inspired by Jev (TypeSafe AI) and Rizzo Flow (Rizzo AI Academy).
 
 ## License
 
