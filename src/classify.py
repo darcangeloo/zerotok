@@ -17,6 +17,7 @@ def request_logprobs(messages):
         "logprobs": True,
         "top_logprobs": TOP_K,
         "cache_prompt": True,
+        "chat_template_kwargs": {"enable_thinking": False}
     }
     response = session.post(SERVER_URL, json=payload, timeout=30)
     response.raise_for_status()
