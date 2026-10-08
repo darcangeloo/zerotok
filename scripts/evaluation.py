@@ -1,7 +1,13 @@
+import sys
+from pathlib import Path
+
+# Permette di lanciare lo script anche direttamente: aggiungo la root al path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import json
 import time
 import statistics
-from .classify import classify_document
+from src.classify import classify_document
 import sys
 
 DATASET = sys.argv[1] if len(sys.argv) > 1 else "data/eval.json"

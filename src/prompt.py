@@ -1,6 +1,7 @@
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 SYSTEM = "Sei un sistema che prende decisioni. Rispondi solo con la lettera dell'opzione scelta."
+SYSTEM_BRANCH = "Sei un sistema che prende decisioni. Valuta le opzioni e scegli quella corretta."
 
 
 def build_prompt(document, categories, descriptions=None):
@@ -28,3 +29,18 @@ def build_prompt(document, categories, descriptions=None):
         {"role": "user", "content": user},
     ]
     return messages, used_letters
+
+
+def build_branch_prompt(document, categories, descriptions=None):
+    if descriptions is not None and len(descriptions) != len(categories):
+        raise ValueError("descriptions deve avere la stessa lunghezza di categories")
+
+    # Un'opzione per ramo, senza lettera: l'ordine non deve comparire nel testo
+    if descriptions:
+        options = [f"{cat}: {desc}\n" for cat, desc in zip(categories, descriptions)]
+    else:
+        options = [f"{cat}\n" for cat in categories]
+
+    before = f"Documento:\n{document}\n\nScegli la categoria del documento tra queste opzioni:\n"
+    after = "\nRispondi con la categoria scelta."
+    return SYSTEM_BRANCH, before, options, after
